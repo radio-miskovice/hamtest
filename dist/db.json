@@ -1,7 +1,0 @@
-{
-    "host": "192.168.33.32",
-    "port": "5432",
-    "user": "jvavruska",
-    "database": "hamtest",
-    "password": "123go"
-}
