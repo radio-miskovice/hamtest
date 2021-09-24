@@ -1,0 +1,60 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch current .TS",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${file}",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Test 'add contest'",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/src/hamtest.ts",
+      "args": [
+        "add",
+        "contest",
+        "VKVPA-2021-09",
+        "2021-09-19T08:00z",
+        "2021-09-19T11:00z"
+      ],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Test 'add log (cabrillo)'",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/src/hamtest.ts",
+      "args": [
+        "add",
+        "log",
+        "OLP-2021",
+        "ok1fca.log", "OK1OA.LOG"
+      ],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+# Header 
+mycall om0rm
+operator om0rm
+
+# Log 
+date 2021-08-03
+20m ssb 14.180
+1753 ra9sdt 59 55 <sergej>
+date 2021-08-04 
+20m cw 14.0171
+
+date 2021-08-05 
+0655 eu4u 599 599 < andy qth lida >
+0658 yo7nsp 599 599 < steber >
+
+date 2021-08-06 
+40m cw
+1223 oe6sgd/qrp 429 
+2104 r6pap 559 577 
+
+date 2021-08-12 
+40m cw
+0658 sp/ok2pdt/p 599 599
+0735 ha5aek/p 559 599 < op bandi qth bufenyves >
+

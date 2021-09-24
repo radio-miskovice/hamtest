@@ -1,0 +1,19 @@
+{
+  "name": "hamtest",
+  "version": "1.0.0",
+  "description": "Ham radio contest evaluation database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cabrillo": "^0.1.0",
+    "commander": "^8.2.0",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.6.1"
+  }
+}

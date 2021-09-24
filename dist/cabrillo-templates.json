@@ -1,0 +1,12 @@
+{
+    "GENERAL": "calls,rsts,nrs,callr,rstr,nrr",
+    "OL-PARTY": {
+        "CCRNRNC": "calls,callr,rsts,nrs,rstr,nrr,exc1r",
+        "CRNCRNC": "calls,rsts,nrs,callr,rstr,nrr,exc1r",
+        "CRNCCRNC": "calls,rsts,nrs,exc1s,callr,rstr,nrr,exc1r"
+    },
+    "CAV": {
+        "CRSCRS": "calls,rsts,exc1s,callr,rstr,exc1r",
+        "CRNCRS": "calls,rsts,exc1s,callr,rstr,exc1r"
+    }
+}
