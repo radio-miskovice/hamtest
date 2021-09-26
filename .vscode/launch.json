@@ -48,8 +48,8 @@
       "args": [
         "add",
         "log",
-        "OLP-2021",
-        "ok1fca.log", "OK1OA.LOG"
+        "OL-PARTY-2021",
+        "OK4RM-OLPARTY-21.LOG", "OK1OA.log", "OK1XC.log", "ok1fca.log"
       ],
       "preLaunchTask": "tsc: build - tsconfig.json",
       "outFiles": [

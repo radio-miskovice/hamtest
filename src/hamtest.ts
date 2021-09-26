@@ -1,7 +1,5 @@
 import { addContest } from './contest';
-
 import { addLogs } from './logfile';
-import { ResultType } from './result';
 
 parseCommandLine( process.argv.slice(2));
 

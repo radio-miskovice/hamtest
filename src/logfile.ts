@@ -9,13 +9,12 @@ const GET_CONTEST_KEY =
   "select CTST_PK from contest where CTST_NAME = $1 ";
 
 const INSERT_LOG_HEADER =
-  "insert into LOGFILE (CTST_PK, LOGF_FILENAME, UPLOADED_TS, CALLSIGN, NOTE) values ($1, $2, now(), $3, $4) returning LOGF_PK";
+  "insert into LOGFILE (CTST_PK, LOGF_FILENAME, UPLOADED_TS, CALLSIGN, EMAIL, LOG_FORMAT, ALL_HEADERS ) values ($1, $2, now(), $3, $4, $5, $6) returning LOGF_PK";
 
 const INSERT_QSO =
   "insert into QSO (LOGF_PK, LOGF_FILENAME, UPLOADED_TS, CALLSIGN, NOTE) values ($1, $2, now(), $3, $4) returning LOGF_PK";
 
 export async function addLogs(argv: string[]) {
-  console.log("in add log")
   if (argv.length < 2) {
     console.log(`'add log' action expects at least two parameters, contest ID and at least one log file name. Got ${argv.length}`);
     process.exit(1);
@@ -48,7 +47,7 @@ export async function addLogs(argv: string[]) {
     // create logfile header
     try {
       await db.query('begin');
-      const res = await db.query(INSERT_LOG_HEADER, [contestKey, logfile, cbrLog.callsign, cbrLog.email]);
+      const res = await db.query(INSERT_LOG_HEADER, [contestKey, logfile, cbrLog.callsign, cbrLog.email, cbrLog.format, JSON.stringify(cbrLog.headers)]);
       if( res.rowCount<1 ) {
         console.log(`Could not create log file header in database for file '${logfile}'. Giving up this file.`);
         continue ;
@@ -57,6 +56,7 @@ export async function addLogs(argv: string[]) {
       for( const rec of cbrLog.dataArray ) {
         recNum++ ;
         rec.logf_pk = headerKey ;
+        rec.ctst_pk = contestKey ;
         const fields = Object.keys(rec) ;
         let sql = `insert into QSO ( ${fields.join(', ')} ) values (`;
         let vals = [] ;
@@ -104,8 +104,13 @@ function prepareLog(logfile: string): CabrilloObject {
     // TODO: create template by pattern
     if (!TT.match(/^FMDT/i)) throw "Log format is invalid";
     const olpTemplate = TEMPLATE['OL-PARTY'];
-    const tpl = olpTemplate[TT.slice(4)];
+    let tpl: string ;
+    while( !tpl && TT.length > 5) {
+      tpl = olpTemplate[TT.slice(4)];
+      TT = TT.slice(0, TT.length - 1);
+    }
     if (tpl) cblog.setTemplateArray(tpl.split(','));
+    else throw `Template for log file '${logfile}' with pattern '${TT}' not found!` ;
     cblog.convertQsoArray2Data();
     return cblog;
   }

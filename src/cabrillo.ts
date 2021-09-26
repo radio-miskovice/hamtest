@@ -26,6 +26,7 @@ export default class CabrilloObject {
   dataArray: HamtestQSORecord[] = [];
   callsign: string | null = null;
   email: string | null = null;
+  format: string;
   /**
    * Check if the supplied text is in Cabrillo format and if it is, read the version
    * @param text Input text (log file content)
@@ -86,6 +87,7 @@ export default class CabrilloObject {
             let t = template.indexOf(i);
             if (t < 0) {
               template.push(i);
+              template.sort( (a,b) => a-b );
               t = template.indexOf(i + 1);
               if (t >= 0) template = [...(template.slice(0, t)), ...(template.slice(t + 1))];
             }
@@ -102,23 +104,8 @@ export default class CabrilloObject {
 
   guessTemplate(): string {
     let tpl = '';
-    let numDates = 0;
-    let numCalls = 0;
-    let numTimes = 0;
-    let numNumbers = 0;
-    let numStrings = 0;
-    let numLocs = 0;
-
     for (let t of this.templateMask) {
       tpl = tpl + (t.type || '?');
-      switch (t.type) {
-        case 'D': numDates++; break;
-        case 'T': numTimes++; break;
-        case 'C': numCalls++; break;
-        case 'N': numNumbers++; break;
-        case 'S': numStrings++; break;
-        case 'L': numLocs++; break;
-      }
     }
     return tpl;
   }
@@ -127,7 +114,6 @@ export default class CabrilloObject {
    * Check every 
    */
   rescanQsoFieldTypes() {
-    let types: string[] | null[] = [];
     for (let qsoRec of this.qsoArray) {
       for (let i = 0; i < this.templateMask.length && i < qsoRec.length; i++) {
         let f = qsoRec[i].replace(/^\s+|\s$/g, '');
@@ -177,7 +163,7 @@ export default class CabrilloObject {
     this.headers = {};
     this.qsoArray = [];
     for (let line of this.logArray) {
-      if (line.match(/^QSO:/)) {
+      if (line.match(/^QSO:/i)) {
         let qso = [];
         let f: string = '';
         for (let i = 0; i < this.templateMask.length; i++) {
@@ -186,14 +172,14 @@ export default class CabrilloObject {
           }
           else f = line.slice(this.templateMask[i].start, this.templateMask[i + 1].start)
           f = f.replace(/^\s+/, '').replace(/\s+$/, '');
-          qso.push(f);
+          qso.push(f.toUpperCase());
         }
         this.qsoArray.push(qso);
       }
       else {
         let m = line.match(/^(.*?):\s*(.*)\s*$/)
         if (m) {
-          let key = m[1];
+          let key = m[1].toUpperCase();
           if (this.headers.hasOwnProperty(key)) {
             if (!(this.headers[key] instanceof Array)) {
               let single = this.headers[key];
@@ -208,11 +194,9 @@ export default class CabrilloObject {
             case 'CALLSIGN':
               this.callsign = m[2].toUpperCase();
               break;
-            /*
             case 'START-OF-LOG':
-              this.version = m[2];
+              this.format = 'Cabrillo/' + m[2];
               break ;
-            */
             case 'EMAIL':
               this.email = m[2].toLowerCase();
           }
