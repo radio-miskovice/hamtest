@@ -135,7 +135,7 @@ CREATE PROCEDURE public.proc_set_category_power(p_ctst_pk integer) LANGUAGE sql 
 update LOGFILE LF
 set CATEGORY = V.CATG_POWER
 from V_CATEGORY_POWER V
-where LF.CTST_PK = 9 and V.CTST_PK = LF.CTST_PK
+where LF.CTST_PK = p_ctst_pk and V.CTST_PK = LF.CTST_PK
   and LF.LOGF_PK = V.LOGF_PK
 $$;
 ALTER PROCEDURE public.proc_set_category_power(p_ctst_pk integer) OWNER TO hamtest_owner;
