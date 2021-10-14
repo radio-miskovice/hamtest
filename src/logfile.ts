@@ -98,19 +98,9 @@ function prepareLog(logfile: string): CabrilloObject {
     console.log(`Processing ${logfile} in Cabrillo format V${formatVersion}.`);
     let cblog = new CabrilloObject(textContent);
     cblog.loadObjectData();
-    cblog.rescanQsoFieldTypes();
+    // cblog.rescanQsoFieldTypes();
     // guess map
-    let TT = cblog.guessTemplate();
-    // TODO: create template by pattern
-    if (!TT.match(/^FMDT/i)) throw "Log format is invalid";
-    const olpTemplate = TEMPLATE['OL-PARTY'];
-    let tpl: string ;
-    while( !tpl && TT.length > 5) {
-      tpl = olpTemplate[TT.slice(4)];
-      TT = TT.slice(0, TT.length - 1);
-    }
-    if (tpl) cblog.setTemplateArray(tpl.split(','));
-    else throw `Template for log file '${logfile}' with pattern '${TT}' not found!` ;
+    let TT = cblog.prepareMapping({ template: cblog.contest });
     cblog.convertQsoArray2Data();
     return cblog;
   }
